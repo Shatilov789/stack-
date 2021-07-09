@@ -1,40 +1,42 @@
 class Stack:
-        def __init__(self):
-            self.items = []
+    def __init__(self):
+        self.items = []
 
-        def isEmpty(self):
-            return self.items == []
+    def isEmpty(self):
+        return self.items == []
 
-        def push(self, item):
-            self.items.insert(0,item)
+    def push(self, item):
+        self.items.append(item)
 
-        def pop(self):
-            return self.items.pop(0)
+    def pop(self):
+        return self.items.pop()
 
-        def peek(self):
-            return self.items[0]
+    def peek(self):
+        return self.items
 
-        def size(self):
-            return len(self.items)
-
-
-s1 = Stack()
+    def size(self):
+        return len(self.items)
 
 
-def balanced(s):
-    pairs = {"{": "}", "(": ")", "[": "]"}
+def is_balanced(text, brackets="〈〉()[]{}"):
+    opening, closing = brackets[::2], brackets[1::2]
+    s1 = Stack()
 
-    for c in s:
-        if c in "{[(":
-            s1.push(c)
+    for character in text:
+        if character in opening:
+            s1.push(opening.index(character))
 
-        elif s1.peek() and c == pairs[s1.peek()[-1]]:
-            s1.pop()
+        elif character in closing:
+            if s1.peek() and s1.peek()[-1] == closing.index(character):
+                s1.pop()
+            else:
+                return "Несбалансированно"
+    return  "Сбалансированно"
 
-        else:
-            return "Несбалансированно"
 
-    return "Сбалансированно"
-
-print(balanced("(((([{}]))))"))
-print(balanced("{{[(])]}}"))
+print(is_balanced('(((([{}]))))'))
+print(is_balanced('[([])((([[[]]])))]{()}'))
+print(is_balanced('{{[()]}}'))
+print(is_balanced('}{}'))
+print(is_balanced('{{[(])]}}'))
+print(is_balanced('[[{())}]'))
